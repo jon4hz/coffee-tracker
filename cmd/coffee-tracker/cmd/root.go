@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 
+	"github.com/jon4hz/coffee-tracker/internal/api"
 	"github.com/jon4hz/coffee-tracker/internal/config"
 	"github.com/jon4hz/coffee-tracker/internal/database"
 	"github.com/jon4hz/coffee-tracker/internal/telegram"
@@ -31,7 +32,10 @@ var Root = func() error {
 	database.Connect()
 	database.Migrate()
 
-	// start api
+	go func() {
+		app := api.NewAPI()
+		log.Fatalln(app.Listen(":3000"))
+	}()
 
 	b, err := telegram.NewBot(cfg.Telegram.BotToken, cfg.Telegram.OwnerID)
 	if err != nil {
