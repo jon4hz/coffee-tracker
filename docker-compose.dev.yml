@@ -1,0 +1,10 @@
+---
+services:
+  coffee-tracker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yml:/app/config.yml
+
+...
